@@ -28,8 +28,16 @@
   </v-container>
 </template>
 <script>
-import axios from 'axios'
+import movieApi from '@/services/MovieApi'
 export default {
+  name: 'Movie',
+  metaInfo: {
+    title: 'Movie Details',
+    meta: [
+      { name: 'description', content: 'Movie Database' },
+      { property: 'og:title', content: 'Movie Details' }
+    ]
+  },
   props: ['id'],
   data () {
     return {
@@ -37,11 +45,9 @@ export default {
     }
   },
   mounted () {
-    const url = 'http://www.omdbapi.com/?apikey=c06638fe&Content-Type=application/json' + '&i=' + this.id
-    axios
-      .get(url)
+    movieApi.fetchSingleMovie(this.id)
       .then(response => {
-        this.singleMovie = response.data
+        this.singleMovie = response
       })
       .catch(error => {
         console.log(error)
